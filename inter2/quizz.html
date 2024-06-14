@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App - Question</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <div class="container">
+        <div id="quiz"></div>
+        <button id="next-button">Next</button>
+    </div>
+    <script>
+        const quizData = [
+            {
+                question: "Which planet is known as the Red Planet?",
+                choices: ["Earth", "Mars", "Jupiter", "Venus"],
+                correct: "Mars"
+            },
+            {
+                question: "Who was the first President of the United States?",
+                choices: ["Thomas Jefferson", "George Washington", "Abraham Lincoln", "John Adams"],
+                correct: "George Washington"
+            },
+            {
+                question: "What is the chemical symbol for gold?",
+                choices: ["Au", "Ag", "Pb", "Fe"],
+                correct: "Au"
+            },
+            {
+                question: "Who wrote 'To Kill a Mockingbird'?",
+                choices: ["Harper Lee", "J.K. Rowling", "Mark Twain", "Ernest Hemingway"],
+                correct: "Harper Lee"
+            },
+            {
+                question: "Which is the largest ocean on Earth?",
+                choices: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+                correct: "Pacific Ocean"
+            },
+            {
+                question: "Which country won the FIFA World Cup in 2018?",
+                choices: ["Brazil", "Germany", "France", "Argentina"],
+                correct: "France"
+            },
+            {
+                question: "What does HTTP stand for?",
+                choices: ["HyperText Transfer Protocol", "HighText Transfer Protocol", "Hyperlink Text Protocol", "HyperText Transmission Protocol"],
+                correct: "HyperText Transfer Protocol"
+            },
+            {
+                question: "Which movie won the Academy Award for Best Picture in 2020?",
+                choices: ["1917", "Joker", "Parasite", "Ford v Ferrari"],
+                correct: "Parasite"
+            },
+            {
+                question: "What is the value of Pi up to two decimal places?",
+                choices: ["3.12", "3.14", "3.16", "3.18"],
+                correct: "3.14"
+            },
+            {
+                question: "Who is known as the 'King of Pop'?",
+                choices: ["Elvis Presley", "Michael Jackson", "Prince", "Madonna"],
+                correct: "Michael Jackson"
+            }
+        ];
+
+        const quizContainer = document.getElementById('quiz');
+        const nextButton = document.getElementById('next-button');
+
+        function buildQuiz(questionIndex) {
+            const currentQuestion = quizData[questionIndex];
+            const choices = currentQuestion.choices.map(choice => 
+                `<label>
+                    <input type="radio" name="question" value="${choice}">
+                    ${choice}
+                </label>`
+            ).join('');
+            quizContainer.innerHTML = `
+                <div class="question">${currentQuestion.question}</div>
+                <div class="answers">${choices}</div>
+            `;
+        }
+
+        function showNextQuestion() {
+            const selector = 'input[name=question]:checked';
+            const userAnswer = (quizContainer.querySelector(selector) || {}).value;
+
+            let answers = JSON.parse(localStorage.getItem('answers')) || [];
+            answers.push(userAnswer);
+            localStorage.setItem('answers', JSON.stringify(answers));
+
+            let currentQuestion = parseInt(localStorage.getItem('currentQuestion')) || 0;
+            currentQuestion++;
+            localStorage.setItem('currentQuestion', currentQuestion);
+
+            if (currentQuestion >= quizData.length) {
+                window.location.href = 'result.html';
+            } else {
+                buildQuiz(currentQuestion);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentQuestion = parseInt(localStorage.getItem('currentQuestion')) || 0;
+            buildQuiz(currentQuestion);
+        });
+
+        nextButton.addEventListener('click', showNextQuestion);
+    </script>
+</body>
+</html>

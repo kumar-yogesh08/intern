@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App - Results</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <div class="container">
+        <div id="results"></div>
+        <div id="gif-container"></div>
+        <button id="restart-button">Restart Quiz</button>
+    </div>
+    <script>
+        const quizData = [
+            {
+                question: "Which planet is known as the Red Planet?",
+                correct: "Mars"
+            },
+            {
+                question: "Who was the first President of the United States?",
+                correct: "George Washington"
+            },
+            {
+                question: "What is the chemical symbol for gold?",
+                correct: "Au"
+            },
+            {
+                question: "Who wrote 'To Kill a Mockingbird'?",
+                correct: "Harper Lee"
+            },
+            {
+                question: "Which is the largest ocean on Earth?",
+                correct: "Pacific Ocean"
+            },
+            {
+                question: "Which country won the FIFA World Cup in 2018?",
+                correct: "France"
+            },
+            {
+                question: "What does HTTP stand for?",
+                correct: "HyperText Transfer Protocol"
+            },
+            {
+                question: "Which movie won the Academy Award for Best Picture in 2020?",
+                correct: "Parasite"
+            },
+            {
+                question: "What is the value of Pi up to two decimal places?",
+                correct: "3.14"
+            },
+            {
+                question: "Who is known as the 'King of Pop'?",
+                correct: "Michael Jackson"
+            }
+        ];
+
+        const passingScore = 6; // Adjust based on total questions
+        const answers = JSON.parse(localStorage.getItem('answers'));
+        let numCorrect = 0;
+
+        quizData.forEach((question, index) => {
+            if (answers[index] === question.correct) {
+                numCorrect++;
+            }
+        });
+
+        document.getElementById('results').innerHTML = `You got ${numCorrect} out of ${quizData.length} correct`;
+
+        if (numCorrect >= passingScore) {
+            document.getElementById('gif-container').innerHTML = '<img src="win.gif" alt="You win!" width="300">';
+        } else {
+            document.getElementById('gif-container').innerHTML = '<img src="lose.gif" alt="You lose!" width="300">';
+        }
+
+        document.getElementById('restart-button').addEventListener('click', function() {
+            window.location.href = 'start.html';
+        });
+    </script>
+</body>
+</html>
